@@ -44,4 +44,18 @@ Router.post("/schedule", async (req: Request, res: Response) => {
   }
 });
 
+Router.get('/', async (req: Request, res: Response) => {
+  try {
+    let { room, date } = req.query as any;
+    if (date == null) date = Date.now().toLocaleString();
+    console.log({ room, date })
+    date =  moment(date, "DD-MM-YYYY")
+    let queryResult = await Meeting.find({ room }).exec();
+    res.status(200).json(queryResult);
+  } catch (error: any) {
+    console.error(error?.message);
+    res.status(400).send("Bad request");
+    
+  }
+})
 export default Router;

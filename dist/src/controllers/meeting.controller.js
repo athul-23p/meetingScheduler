@@ -52,4 +52,19 @@ Router.post("/schedule", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(400).send("Bad request");
     }
 }));
+Router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let { room, date } = req.query;
+        if (date == null)
+            date = Date.now().toLocaleString();
+        console.log({ room, date });
+        date = (0, moment_1.default)(date, "DD-MM-YYYY");
+        let queryResult = yield meeting_model_1.default.find({ room }).exec();
+        res.status(200).json(queryResult);
+    }
+    catch (error) {
+        console.error(error === null || error === void 0 ? void 0 : error.message);
+        res.status(400).send("Bad request");
+    }
+}));
 exports.default = Router;
